@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BitStudio | Soluciones Tecnológicas</title>
+    <!-- Agregado: Icono de la página (Favicon) -->
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fuente Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -934,8 +937,10 @@
         </div>
     </section>
 
+    <!-- (SECCIÓN DE CONTACTO ESTÁTICA ELIMINADA) -->
+
     <!-- NUEVA SECCIÓN: Portafolio Detallado -->
-    <section id="portafolio" class="py-24 px-4">
+    <section id="portafolio" class="py-24 px-4 mb-20"> <!-- mb-20 para dar espacio al flotante -->
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-24">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Portafolio de Trabajo</h2>
@@ -1362,32 +1367,42 @@
         </div>
     </section>
 
-    <!-- Sección de Contacto -->
-    <section id="contacto" class="py-20 px-4">
-        <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-10 text-center border border-white/10 relative overflow-hidden group">
-            <!-- Efecto de brillo interior -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <!-- NUEVO: BARRA FLOTANTE DE CONTACTO (Sustituye la sección fija) -->
+    <div id="floating-contact" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 transition-transform duration-500 w-[90%] max-w-md">
+        <div class="glass-panel rounded-2xl p-4 border border-white/20 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-[#0f172a]/90">
             
-            <h2 class="text-3xl font-bold text-white mb-6">¿Listo para mejorar tu vida digital?</h2>
-            <p class="text-gray-300 mb-8">
-                Contáctanos hoy mismo. En <span class="text-cyan-400 font-bold">BitStudio</span> estamos listos para ayudarte.
-            </p>
+            <!-- Texto de Contacto -->
+            <div class="text-center mb-3">
+                <h3 class="text-white font-bold text-lg leading-tight">Contacto</h3>
+                <p class="text-xs text-gray-400 mt-1">¿Listo para mejorar tu vida digital? Estamos aquí para ayudarte.</p>
+            </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://wa.me/message/GTDQYEMHLALMH1?src=qr" target="_blank" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-green-600/20 hover:bg-green-600/40 border border-green-500/30 text-green-400 font-bold transition-all group-btn">
-                    <i class="fa-brands fa-whatsapp text-xl group-btn-hover:scale-110 transition-transform"></i>
+            <!-- Botones -->
+            <div class="flex items-center justify-between gap-3">
+                <a href="https://wa.me/message/GTDQYEMHLALMH1?src=qr" target="_blank" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-green-600/90 hover:bg-green-500 text-white font-bold text-sm transition-all shadow-lg group">
+                    <i class="fa-brands fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
                     WhatsApp
                 </a>
-                <a href="mailto:jesusantoniobarretocastillo02@gmail.com" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold transition-all group-btn">
-                    <i data-lucide="mail" class="w-5 h-5 group-btn-hover:scale-110 transition-transform"></i>
-                    Correo Electrónico
+                
+                <a href="mailto:jesusantoniobarretocastillo02@gmail.com" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white font-bold text-sm transition-all group">
+                    <i data-lucide="mail" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    Correo
                 </a>
             </div>
-        </div>
-    </section>
 
-    <footer class="glass-panel py-8 mt-12 text-center border-b-0 border-x-0">
-        <p class="text-gray-500 text-sm">© 2025 <span class="text-cyan-400 font-bold">BitStudio</span>. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <footer class="glass-panel py-8 mt-12 text-center border-b-0 border-x-0 relative z-10 bg-[#0f172a]">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity">
+                    <i data-lucide="cpu" class="text-cyan-400 w-5 h-5"></i>
+                    <span class="font-bold text-white">BitStudio</span>
+                </div>
+                <p class="text-gray-500 text-xs">© 2025 BitStudio. Todos los derechos reservados.</p>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -1446,6 +1461,30 @@
                 alert('Correo copiado al portapapeles');
             });
         }
+
+        // --- Lógica Scroll para Barra Flotante ---
+        let lastScrollTop = 0;
+        const floatingContact = document.getElementById('floating-contact');
+
+        window.addEventListener("scroll", function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Si estamos muy arriba (inicio), mostrar siempre
+            if (scrollTop < 100) {
+                floatingContact.classList.remove('translate-y-[200%]');
+                return;
+            }
+
+            if (scrollTop > lastScrollTop) {
+                // Scroll hacia abajo -> Ocultar
+                floatingContact.classList.add('translate-y-[200%]');
+            } else {
+                // Scroll hacia arriba -> Mostrar
+                floatingContact.classList.remove('translate-y-[200%]');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile
+        }, false);
+
     </script>
 </body>
 </html>
