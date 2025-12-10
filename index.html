@@ -190,10 +190,8 @@
             animation: scrollUp 20s linear infinite;
         }
         
-        /* Pausar animación al pasar el mouse */
-        .vinyl-container:hover .vinyl-track {
-            animation-play-state: paused;
-        }
+        /* ELIMINADO: Regla de pausa al pasar el mouse */
+        /* .vinyl-container:hover .vinyl-track { animation-play-state: paused; } */
 
         @keyframes scrollUp {
             0% { transform: translateY(0); }
@@ -1275,7 +1273,7 @@
 
                 <!-- PROYECTO 6: MÚSICA (Texto Izquierda, Visual Derecha) -->
                 <div class="grid lg:grid-cols-2 gap-12 items-center group">
-                    <!-- Texto: Metadatos (Restaurado) -->
+                    <!-- Texto: Metadatos -->
                     <div class="order-2 lg:order-1 text-left">
                         <div class="inline-block p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-6">
                             <i data-lucide="music" class="w-8 h-8"></i>
@@ -1301,10 +1299,12 @@
                     </div>
 
                     <!-- Visual: Music Player Mockup + Vinyl Background -->
-                    <div class="relative flex justify-center order-1 lg:order-2 fade-mask h-[500px] overflow-hidden">
+                    <!-- CAMBIO: Se quitó 'fade-mask' de este contenedor padre para que no afecte al reproductor -->
+                    <div class="relative flex justify-center order-1 lg:order-2 h-[500px] overflow-hidden">
                         
-                        <!-- FONDO: Carrusel de Vinilos (Opacidad reducida para no distraer) -->
-                        <div class="w-64 relative overflow-hidden vinyl-container absolute inset-0 mx-auto opacity-30 scale-110">
+                        <!-- FONDO: Carrusel de Vinilos -->
+                        <!-- CAMBIO: Se agregó 'fade-mask' AQUÍ, solo para los vinilos -->
+                        <div class="w-64 relative overflow-hidden vinyl-container absolute inset-0 mx-auto opacity-30 scale-110 fade-mask">
                             <div class="vinyl-track absolute top-0 left-0 w-full flex flex-col gap-6">
                                 <!-- Bloque 1 -->
                                 <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-cyan-500"></div></div></div>
@@ -1320,7 +1320,7 @@
                             </div>
                         </div>
 
-                        <!-- PRIMER PLANO: Player Card (Restaurado) -->
+                        <!-- PRIMER PLANO: Player Card -->
                         <div class="relative w-72 bg-neutral-900/90 backdrop-blur-sm rounded-3xl border border-neutral-700 shadow-2xl p-6 transform group-hover:scale-105 transition-transform duration-700 z-10 my-auto h-fit">
                             <!-- Cover Art -->
                             <div class="w-full aspect-square bg-gradient-to-tr from-cyan-900 to-blue-900 rounded-2xl mb-6 shadow-lg relative overflow-hidden flex items-center justify-center">
