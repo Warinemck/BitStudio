@@ -185,37 +185,37 @@
             pointer-events: auto;
         }
 
-        /* --- Animación Carrusel Vinilos --- */
-        .vinyl-track {
-            animation: scrollUp 20s linear infinite;
-        }
-        
-        /* ELIMINADO: Regla de pausa al pasar el mouse */
-        /* .vinyl-container:hover .vinyl-track { animation-play-state: paused; } */
-
-        @keyframes scrollUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
+        /* --- Animación Carrusel Vinilos (NUEVO HORIZONTAL) --- */
+        .vinyl-track-h {
+            animation: scrollLeft 20s linear infinite;
+            display: flex;
+            width: max-content; /* Asegura que quepan todos */
         }
 
-        /* Máscara de desvanecimiento para el carrusel */
-        .fade-mask {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Máscara de desvanecimiento horizontal */
+        .fade-mask-h {
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
         /* Estilos Vinilo CSS */
         .vinyl-record {
-            width: 100%;
-            aspect-ratio: 1/1;
+            width: 120px; /* Tamaño fijo para horizontal */
+            height: 120px;
             border-radius: 4px;
             background: #1e1e1e;
             position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            flex-shrink: 0; /* Evitar que se aplasten */
         }
         .vinyl-disc {
             width: 90%;
@@ -935,7 +935,29 @@
         </div>
     </section>
 
-    <!-- (SECCIÓN DE CONTACTO ESTÁTICA ELIMINADA) -->
+    <!-- Sección de Contacto (MOVIDA AQUÍ) -->
+    <section id="contacto" class="py-20 px-4">
+        <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-10 text-center border border-white/10 relative overflow-hidden group">
+            <!-- Efecto de brillo interior -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <h2 class="text-3xl font-bold text-white mb-6">¿Listo para mejorar tu vida digital?</h2>
+            <p class="text-gray-300 mb-8">
+                Contáctanos hoy mismo. En <span class="text-cyan-400 font-bold">BitStudio</span> estamos listos para ayudarte.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://wa.me/message/GTDQYEMHLALMH1?src=qr" target="_blank" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-green-600/20 hover:bg-green-600/40 border border-green-500/30 text-green-400 font-bold transition-all group-btn">
+                    <i class="fa-brands fa-whatsapp text-xl group-btn-hover:scale-110 transition-transform"></i>
+                    WhatsApp
+                </a>
+                <a href="mailto:jesusantoniobarretocastillo02@gmail.com" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold transition-all group-btn">
+                    <i data-lucide="mail" class="w-5 h-5 group-btn-hover:scale-110 transition-transform"></i>
+                    Correo Electrónico
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- NUEVA SECCIÓN: Portafolio Detallado -->
     <section id="portafolio" class="py-24 px-4 mb-20"> <!-- mb-20 para dar espacio al flotante -->
@@ -1271,95 +1293,85 @@
                     </div>
                 </div>
 
-                <!-- PROYECTO 6: MÚSICA (Texto Izquierda, Visual Derecha) -->
-                <div class="grid lg:grid-cols-2 gap-12 items-center group">
-                    <!-- Texto: Metadatos -->
-                    <div class="order-2 lg:order-1 text-left">
-                        <div class="inline-block p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-6">
-                            <i data-lucide="music" class="w-8 h-8"></i>
+                <!-- PROYECTO 6: MÚSICA (CARRUSEL INFERIOR HORIZONTAL) -->
+                <div class="relative group">
+                    <!-- Contenedor Superior (Texto + Reproductor) -->
+                    <div class="grid lg:grid-cols-2 gap-12 items-center mb-12">
+                        <!-- Texto -->
+                        <div class="text-left">
+                            <div class="inline-block p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-6">
+                                <i data-lucide="music" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-4">Tu Música, Sin Límites</h3>
+                            <p class="text-gray-300 leading-relaxed mb-6">
+                                Recuperamos la calidad que las plataformas de streaming comprimen. Entregamos archivos <strong>FLAC y MP3 (320kbps)</strong> perfectamente etiquetados, con su portada original incrustada.
+                                <br><br>
+                                Olvídate de la publicidad y la dependencia de internet. Construye tu biblioteca personal para siempre.
+                            </p>
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-gray-400">
+                                <i data-lucide="headphones" class="w-4 h-4"></i>
+                                <span>Calidad de Estudio Garantizada</span>
+                            </div>
                         </div>
-                        <h3 class="text-3xl font-bold text-white mb-4">Metadatos Perfectos</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">
-                            Tu biblioteca musical ordenada y profesional. Cada archivo incluye la información correcta para cualquier reproductor.
-                        </p>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle" class="text-cyan-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Carátula HD:</strong> Incrustada directamente en el archivo, visible en autos y celulares.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle" class="text-cyan-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Etiquetas Completas:</strong> Artista, Álbum, Año, Género y Número de Pista.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle" class="text-cyan-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Audio Puro:</strong> Sin marcas de agua, intro/outro de radio o ruidos molestos.</span>
-                            </li>
-                        </ul>
+
+                        <!-- Visual: Reproductor -->
+                        <div class="flex justify-center">
+                            <div class="relative w-72 bg-neutral-900 rounded-3xl border border-neutral-700 shadow-2xl p-6 transform group-hover:scale-105 transition-transform duration-700 z-10">
+                                <!-- Cover Art -->
+                                <div class="w-full aspect-square bg-gradient-to-tr from-cyan-900 to-blue-900 rounded-2xl mb-6 shadow-lg relative overflow-hidden flex items-center justify-center">
+                                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+                                    <i data-lucide="music" class="w-16 h-16 text-white/50"></i>
+                                    <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-yellow-400 border border-yellow-400/30">
+                                        HI-RES LOSSLESS
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <h4 class="text-white font-bold text-lg leading-tight mb-1">Midnight City</h4>
+                                    <p class="text-gray-400 text-sm">M83 • Hurry Up, We're Dreaming</p>
+                                </div>
+                                <div class="w-full h-1 bg-gray-700 rounded-full mb-2 relative">
+                                    <div class="absolute left-0 top-0 h-full w-2/3 bg-cyan-500 rounded-full"></div>
+                                    <div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
+                                </div>
+                                <div class="flex justify-between text-[10px] text-gray-500 mb-6">
+                                    <span>2:45</span>
+                                    <span>4:03</span>
+                                </div>
+                                <div class="flex justify-between items-center text-white">
+                                    <i data-lucide="shuffle" class="w-4 h-4 text-gray-500"></i>
+                                    <i data-lucide="skip-back" class="w-6 h-6 hover:text-cyan-400 cursor-pointer"></i>
+                                    <div class="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 hover:scale-110 transition-transform cursor-pointer">
+                                        <i data-lucide="play" class="w-5 h-5 fill-white"></i>
+                                    </div>
+                                    <i data-lucide="skip-forward" class="w-6 h-6 hover:text-cyan-400 cursor-pointer"></i>
+                                    <i data-lucide="repeat" class="w-4 h-4 text-gray-500"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Visual: Music Player Mockup + Vinyl Background -->
-                    <!-- CAMBIO: Se quitó 'fade-mask' de este contenedor padre para que no afecte al reproductor -->
-                    <div class="relative flex justify-center order-1 lg:order-2 h-[500px] overflow-hidden">
-                        
-                        <!-- FONDO: Carrusel de Vinilos -->
-                        <!-- CAMBIO: Se agregó 'fade-mask' AQUÍ, solo para los vinilos -->
-                        <div class="w-64 relative overflow-hidden vinyl-container absolute inset-0 mx-auto opacity-30 scale-110 fade-mask">
-                            <div class="vinyl-track absolute top-0 left-0 w-full flex flex-col gap-6">
-                                <!-- Bloque 1 -->
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-cyan-500"></div></div></div>
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-purple-500"></div></div></div>
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-pink-500"></div></div></div>
-                                <!-- Bloque 2 -->
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-green-500"></div></div></div>
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-red-500"></div></div></div>
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-blue-500"></div></div></div>
-                                <!-- Bloque 3 -->
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-cyan-500"></div></div></div>
-                                <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-purple-500"></div></div></div>
-                            </div>
+                    <!-- Visual: Carrusel Inferior -->
+                    <div class="w-full h-32 overflow-hidden fade-mask-h relative mt-8">
+                        <div class="vinyl-track-h flex gap-6 absolute top-0 left-0 h-full items-center">
+                            <!-- Bloque 1 -->
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-cyan-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-purple-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-pink-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-yellow-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-green-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-red-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-blue-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-orange-500"></div></div></div>
+                            <!-- Bloque 2 (Duplicado) -->
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-cyan-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-purple-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-pink-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-yellow-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-green-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-red-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-blue-500"></div></div></div>
+                            <div class="vinyl-record"><div class="vinyl-disc"><div class="vinyl-label bg-orange-500"></div></div></div>
                         </div>
-
-                        <!-- PRIMER PLANO: Player Card -->
-                        <div class="relative w-72 bg-neutral-900/90 backdrop-blur-sm rounded-3xl border border-neutral-700 shadow-2xl p-6 transform group-hover:scale-105 transition-transform duration-700 z-10 my-auto h-fit">
-                            <!-- Cover Art -->
-                            <div class="w-full aspect-square bg-gradient-to-tr from-cyan-900 to-blue-900 rounded-2xl mb-6 shadow-lg relative overflow-hidden flex items-center justify-center">
-                                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
-                                <i data-lucide="music" class="w-16 h-16 text-white/50"></i>
-                                <!-- Quality Badge -->
-                                <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-yellow-400 border border-yellow-400/30">
-                                    HI-RES LOSSLESS
-                                </div>
-                            </div>
-                            
-                            <!-- Info -->
-                            <div class="mb-6">
-                                <h4 class="text-white font-bold text-lg leading-tight mb-1">Midnight City</h4>
-                                <p class="text-gray-400 text-sm">M83 • Hurry Up, We're Dreaming</p>
-                            </div>
-                            
-                            <!-- Progress Bar -->
-                            <div class="w-full h-1 bg-gray-700 rounded-full mb-2 relative">
-                                <div class="absolute left-0 top-0 h-full w-2/3 bg-cyan-500 rounded-full"></div>
-                                <div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
-                            </div>
-                            <div class="flex justify-between text-[10px] text-gray-500 mb-6">
-                                <span>2:45</span>
-                                <span>4:03</span>
-                            </div>
-                            
-                            <!-- Controls -->
-                            <div class="flex justify-between items-center text-white">
-                                <i data-lucide="shuffle" class="w-4 h-4 text-gray-500"></i>
-                                <i data-lucide="skip-back" class="w-6 h-6 hover:text-cyan-400 cursor-pointer"></i>
-                                <div class="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 hover:scale-110 transition-transform cursor-pointer">
-                                    <i data-lucide="play" class="w-5 h-5 fill-white"></i>
-                                </div>
-                                <i data-lucide="skip-forward" class="w-6 h-6 hover:text-cyan-400 cursor-pointer"></i>
-                                <i data-lucide="repeat" class="w-4 h-4 text-gray-500"></i>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
