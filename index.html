@@ -22,6 +22,35 @@
             position: relative;
         }
 
+        /* --- Scrollbar Personalizado (NUEVO) --- */
+        /* Para Chrome, Safari y Opera */
+        ::-webkit-scrollbar {
+            width: 8px; /* Ancho vertical */
+            height: 8px; /* Alto horizontal */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.1); /* Fondo muy sutil */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2); /* Barra semitransparente */
+            border-radius: 10px;
+            border: 2px solid transparent; /* Truco para dar espacio alrededor si se usa background-clip */
+            background-clip: content-box; /* Opcional: hace la barra mas fina visualmente */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4); /* Más visible al pasar el mouse */
+        }
+
+        /* Para Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) rgba(15, 23, 42, 0.1);
+        }
+
         /* Ajuste para el scroll */
         html {
             scroll-padding-top: 100px;
@@ -226,21 +255,22 @@
 
     <!-- Overlay de Pagos (Sección Oculta) -->
     <div id="pagos-overlay" class="hidden-overlay fixed inset-0 z-[60] bg-[#0f172a]/95 backdrop-blur-xl flex items-center justify-center p-4">
-        <div class="glass-panel p-8 rounded-3xl max-w-md w-full relative border border-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+        <!-- AGREGADO: max-h-[85vh] y overflow-y-auto para scroll en móviles -->
+        <div class="glass-panel p-6 md:p-8 rounded-3xl max-w-md w-full relative border border-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.15)] max-h-[85vh] overflow-y-auto">
             <!-- Botón Cerrar -->
-            <button onclick="togglePagos()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+            <button onclick="togglePagos()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
 
             <div class="text-center">
-                <div class="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-400 border border-blue-500/30">
+                <div class="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-400 border border-blue-500/30 shrink-0">
                     <i class="fa-brands fa-paypal text-4xl"></i>
                 </div>
                 
                 <h2 class="text-3xl font-bold text-white mb-2">Métodos de Pago</h2>
-                <p class="text-gray-400 mb-8 text-sm">Realiza tu pago de forma segura a través de PayPal.</p>
+                <p class="text-gray-400 mb-6 text-sm">Realiza tu pago de forma segura a través de PayPal.</p>
 
-                <div class="space-y-6">
+                <div class="space-y-4">
                     <!-- Opción 1: PayPal.Me Link (ACTIVADO) -->
                     <div class="bg-white/5 rounded-xl p-4 border border-white/10">
                         <p class="text-xs text-blue-300 font-bold uppercase mb-2 tracking-wider">Pago Rápido</p>
@@ -257,31 +287,42 @@
                         <div class="flex-grow border-t border-white/10"></div>
                     </div>
 
-                    <!-- Opción 2: Correo -->
-                    <div class="bg-blue-600/10 rounded-xl p-6 border border-blue-500/30 relative overflow-hidden">
-                        <!-- Etiqueta de Recomendado -->
-                        <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] px-2 py-1 font-bold rounded-bl-lg">
-                            RECOMENDADO
-                        </div>
+                    <!-- Opción 2: Correo (AHORA DESPLEGABLE) -->
+                    <div class="bg-blue-600/10 rounded-xl border border-blue-500/30 relative overflow-hidden transition-all duration-300">
+                        
+                        <!-- Cabecera del Acordeón -->
+                        <button onclick="toggleEmailPagos()" class="w-full p-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs text-blue-300 font-bold uppercase tracking-wider">Opción Recomendada</span>
+                                    <span class="bg-blue-600 text-white text-[9px] px-1.5 py-0.5 font-bold rounded">INFO</span>
+                                </div>
+                                <p class="text-sm font-bold text-white mt-1">Ver datos para Transferencia/Correo</p>
+                            </div>
+                            <i id="chevron-email" data-lucide="chevron-down" class="w-5 h-5 text-blue-300 chevron transition-transform duration-300"></i>
+                        </button>
 
-                        <div class="text-left mb-4">
-                            <p class="text-xs text-blue-300 font-bold uppercase mb-2 tracking-wider">Instrucciones:</p>
-                            <ol class="text-xs text-gray-300 space-y-1 list-decimal ml-4 mb-4">
-                                <li>Entra a tu app de PayPal.</li>
-                                <li>Selecciona "Enviar" o "Pagar".</li>
-                                <li>Ingresa el siguiente correo:</li>
-                            </ol>
-                            
-                            <!-- Contenedor del Correo -->
-                            <div class="bg-black/30 p-3 rounded-lg border border-white/10 flex items-center justify-between group cursor-pointer" onclick="copiarCorreo()">
-                                <p class="text-white font-mono text-sm break-all" id="paypal-email">jesusantoniobarretocastillo02@gmail.com</p>
-                                <i data-lucide="copy" class="w-5 h-5 text-blue-400 group-hover:text-white transition-colors"></i>
+                        <!-- Contenido Desplegable (Instrucciones) -->
+                        <div id="email-pagos-content" class="accordion-content px-4 pb-4">
+                            <div class="pt-2 border-t border-white/10">
+                                <p class="text-xs text-blue-300 font-bold uppercase mb-2 tracking-wider mt-2">Instrucciones:</p>
+                                <ol class="text-xs text-gray-300 space-y-1 list-decimal ml-4 mb-4 text-left">
+                                    <li>Entra a tu app de PayPal.</li>
+                                    <li>Selecciona "Enviar" o "Pagar".</li>
+                                    <li>Ingresa el siguiente correo:</li>
+                                </ol>
+                                
+                                <!-- Contenedor del Correo -->
+                                <div class="bg-black/30 p-3 rounded-lg border border-white/10 flex items-center justify-between group cursor-pointer mb-4" onclick="copiarCorreo()">
+                                    <p class="text-white font-mono text-xs sm:text-sm break-all" id="paypal-email">jesusantoniobarretocastillo02@gmail.com</p>
+                                    <i data-lucide="copy" class="w-5 h-5 text-blue-400 group-hover:text-white transition-colors shrink-0 ml-2"></i>
+                                </div>
+
+                                <button onclick="copiarCorreo()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors shadow-lg flex items-center justify-center gap-2 text-sm">
+                                    <i class="fa-regular fa-copy"></i> Copiar Correo
+                                </button>
                             </div>
                         </div>
-
-                        <button onclick="copiarCorreo()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors shadow-lg flex items-center justify-center gap-2">
-                            <i class="fa-regular fa-copy"></i> Copiar Correo
-                        </button>
                     </div>
                 </div>
 
@@ -305,7 +346,7 @@
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                 </span>
-                BitStudio v1.0
+                BitStudio
             </div>
             
             <h1 class="text-5xl md:text-7xl font-bold leading-tight tracking-tight text-white">
@@ -868,6 +909,19 @@
             } else {
                 overlay.classList.remove('visible-overlay');
                 overlay.classList.add('hidden-overlay');
+            }
+        }
+
+        function toggleEmailPagos() {
+            const content = document.getElementById('email-pagos-content');
+            const icon = document.getElementById('chevron-email');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('active');
+                icon.style.transform = 'rotate(180deg)';
             }
         }
 
