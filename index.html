@@ -109,12 +109,12 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out, opacity 0.4s ease, margin-top 0.3s ease;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease, margin-top 0.3s ease;
             opacity: 0;
         }
         
         .accordion-content.active {
-            max-height: 600px;
+            max-height: 2000px; /* Aumentado para soportar acordeones anidados */
             opacity: 1;
             margin-top: 1rem;
             padding-top: 1rem;
@@ -128,6 +128,20 @@
         .logo-container:hover .logo-icon {
             color: #22d3ee;
             filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.5));
+        }
+
+        /* Estilo para listas dentro de detalles */
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .details-list li::before {
+            content: '•';
+            color: #22d3ee;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
         }
 
     </style>
@@ -237,20 +251,25 @@
                     <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-cyan-300 transition-colors">Descarga de Música</h3>
                     <p class="text-gray-400 mb-6">Archivos de audio en alta calidad con carátulas y metadatos organizados.</p>
 
-                    <!-- Botón Desplegable -->
+                    <!-- Botón Desplegable Principal -->
                     <button onclick="toggleAccordion('content-music', 'chevron-music')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5 group-hover:border-cyan-500/30">
                         <span class="text-sm font-semibold text-cyan-200">Ver Precios y Detalles</span>
                         <i id="chevron-music" data-lucide="chevron-down" class="w-4 h-4 text-cyan-200 chevron"></i>
                     </button>
 
-                    <!-- Contenido Oculto -->
+                    <!-- Contenido Oculto Principal -->
                     <div id="content-music" class="accordion-content">
                         <div class="space-y-3 text-sm text-gray-300">
                             <p class="italic opacity-80 border-l-2 border-cyan-500 pl-3">Incluye: Artista, Álbum, Año y Carátula original.</p>
+                            
                             <div class="space-y-2 mt-4">
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5">
                                     <span>Por canción</span>
                                     <span class="font-bold text-green-400">$ 15 MXN</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5">
+                                    <span>Canción FLAC (Lossless)</span>
+                                    <span class="font-bold text-green-400">$ 30 MXN</span>
                                 </div>
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5">
                                     <span>Álbum completo</span>
@@ -261,6 +280,28 @@
                                     <span class="font-bold text-green-400">$ 50 MXN</span>
                                 </div>
                             </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-music', 'chevron-music-detail')" class="w-full text-left text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-2">
+                                    <i id="chevron-music-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-music" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Lista de canciones (Nombre exacto o link de YouTube).</li>
+                                            <li>Nombre del álbum (si aplica).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>1 a 2 días hábiles (dependiendo cantidad).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -295,6 +336,31 @@
                                     <span class="font-bold text-green-400">$ 150 MXN</span>
                                 </div>
                             </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-invit', 'chevron-invit-detail')" class="w-full text-left text-xs text-fuchsia-400 hover:text-fuchsia-300 flex items-center gap-2">
+                                    <i id="chevron-invit-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-invit" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Datos del evento (Fecha, Hora, Lugar, Ubicación).</li>
+                                            <li>Nombre del festejado(a).</li>
+                                            <li>Temática o colores deseados.</li>
+                                            <li>Fotos de buena calidad (opcional).</li>
+                                            <li>Canción de fondo (para video).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>2 a 3 días hábiles (Estática).</li>
+                                            <li>4 días hábiles (Video).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -327,6 +393,28 @@
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5">
                                     <span>Impresión B/N</span>
                                     <span class="font-bold text-green-400">$ 22 MXN</span>
+                                </div>
+                            </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-curp', 'chevron-curp-detail')" class="w-full text-left text-xs text-green-400 hover:text-green-300 flex items-center gap-2">
+                                    <i id="chevron-curp-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-curp" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Nombre completo y fecha de nacimiento.</li>
+                                            <li>Estado de nacimiento.</li>
+                                            <li>O una foto de tu CURP anterior.</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>Medio día aproximadamente.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -365,6 +453,27 @@
                                     <span class="font-bold text-green-400">+ $ 23 MXN</span>
                                 </div>
                             </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-acta', 'chevron-acta-detail')" class="w-full text-left text-xs text-rose-400 hover:text-rose-300 flex items-center gap-2">
+                                    <i id="chevron-acta-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-acta" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Tu CURP.</li>
+                                            <li>Pago por adelantado del costo del trámite gubernamental (varía por estado).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>Medio día aproximadamente (una vez procesado el pago).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -400,6 +509,29 @@
                                 </div>
                                 <p class="text-xs text-gray-500 text-right mt-1">*Precio aproximado, puede variar según requerimientos.</p>
                             </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-web', 'chevron-web-detail')" class="w-full text-left text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-2">
+                                    <i id="chevron-web-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-web" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Información de tu negocio (Nombre, servicios, precios, horarios).</li>
+                                            <li>Logotipo (si tienes) e imágenes de buena calidad.</li>
+                                            <li>Enlaces a tus redes sociales (Facebook, Instagram, WhatsApp).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>1 a 2 semanas (dependiendo complejidad).</li>
+                                        </ul>
+                                        <p class="text-[10px] text-gray-500 mt-2 italic">Nota: No incluye dominio (.com) ni hosting anual, solo el diseño y despliegue gratuito o asesoría para contratación.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -432,6 +564,29 @@
                                 </div>
                                 <p class="text-xs text-gray-500 text-right mt-1">*Incluye 2 propuestas de diseño.</p>
                             </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-logo', 'chevron-logo-detail')" class="w-full text-left text-xs text-amber-400 hover:text-amber-300 flex items-center gap-2">
+                                    <i id="chevron-logo-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-logo" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Nombre de tu marca/negocio.</li>
+                                            <li>Giro o actividad (¿qué vendes?).</li>
+                                            <li>Colores de preferencia y estilo deseado.</li>
+                                            <li>Ejemplos de logos que te gusten (referencias).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>2 a 3 días hábiles para propuestas.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -461,6 +616,29 @@
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5">
                                     <span>Diseño Publicitario</span>
                                     <span class="font-bold text-green-400">Desde $ 300 MXN</span>
+                                </div>
+                            </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-lona', 'chevron-lona-detail')" class="w-full text-left text-xs text-teal-400 hover:text-teal-300 flex items-center gap-2">
+                                    <i id="chevron-lona-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-lona" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Medidas exactas de la lona (ancho x alto).</li>
+                                            <li>Texto e información que llevará.</li>
+                                            <li>Logotipo en alta calidad e imágenes (si aplica).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>1 a 2 semanas.</li>
+                                        </ul>
+                                        <p class="text-[10px] text-gray-500 mt-2 italic">Nota: El precio es solo por el DISEÑO. No incluye impresión física.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -502,6 +680,27 @@
                                     <p class="text-xs text-gray-500">
                                         Te permite tener ambos sistemas y elegir cual usar al encender tu equipo.
                                     </p>
+                                </div>
+                            </div>
+
+                            <!-- Botón Sub-Desplegable Detalle -->
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button onclick="toggleAccordion('detail-linux', 'chevron-linux-detail')" class="w-full text-left text-xs text-orange-400 hover:text-orange-300 flex items-center gap-2">
+                                    <i id="chevron-linux-detail" data-lucide="plus-circle" class="w-4 h-4 chevron"></i>
+                                    <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ver Requisitos y Tiempo de Entrega
+                                </button>
+                                <div id="detail-linux" class="accordion-content">
+                                    <div class="bg-black/40 p-4 rounded-lg mt-2 text-xs text-gray-300">
+                                        <h4 class="font-bold text-white mb-2">Requisitos:</h4>
+                                        <ul class="details-list">
+                                            <li>Laptop o PC con su cargador/cable de corriente.</li>
+                                            <li>Si tienes archivos importantes, se recomienda un respaldo previo (aunque cuidamos tus datos, siempre existe un riesgo mínimo).</li>
+                                        </ul>
+                                        <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
+                                        <ul class="details-list">
+                                            <li>3 a 4 días (se requiere dejar el equipo).</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -551,15 +750,22 @@
             });
         });
 
-        // Lógica del Acordeón para los precios
+        // Lógica del Acordeón para los precios y detalles
         function toggleAccordion(contentId, iconId) {
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
-            const iconElement = icon.closest('svg') || icon; 
+            
+            // Si el icono es un SVG inyectado por Lucide, necesitamos manejarlo con cuidado
+            // pero si es FontAwesome o elemento I directo funcionará con style.transform
+            
+            // Detener propagación si es un sub-botón para que no cierre el padre (si fuera necesario)
+            // event.stopPropagation(); 
 
             if (content.classList.contains('active')) {
                 content.classList.remove('active');
                 icon.style.transform = 'rotate(0deg)';
+                // Si es un sub-acordeón cerrándose, podríamos ajustar la altura del padre si quisiéramos,
+                // pero con max-height grande en CSS no es necesario.
             } else {
                 content.classList.add('active');
                 icon.style.transform = 'rotate(180deg)';
