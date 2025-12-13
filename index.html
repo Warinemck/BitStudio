@@ -258,6 +258,37 @@
 </head>
 <body>
 
+    <!-- AGREGADO: Elemento de Audio para Música de Fondo -->
+    <audio id="bg-music" loop>
+        <source src="loop.mp3" type="audio/mpeg">
+        <!-- Fallback si el navegador no soporta el audio -->
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- AGREGADO: Control de Música Flotante (Actualizado con Volumen) -->
+    <div id="music-control" class="fixed top-24 left-1/2 -translate-x-1/2 z-40 transition-transform duration-500 glass-panel px-4 py-2 rounded-full flex items-center gap-3 border border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-xl bg-[#0f172a]/60">
+        <button id="music-toggle" class="text-cyan-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
+            <i class="fa-solid fa-play text-lg"></i>
+        </button>
+        <div class="w-px h-4 bg-white/20 shrink-0"></div>
+        <button id="mute-toggle" class="text-gray-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
+            <i class="fa-solid fa-volume-high text-lg"></i>
+        </button>
+        
+        <!-- Nuevo: Separador y Botón Expansor -->
+        <div class="w-px h-4 bg-white/20 shrink-0"></div>
+        <button id="volume-expand" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 w-4 flex justify-center shrink-0">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+
+        <!-- Nuevo: Barra de Volumen Desplegable -->
+        <div id="volume-wrapper" class="w-0 overflow-hidden transition-all duration-300 ease-out flex items-center">
+            <div class="w-24 pl-2 flex items-center">
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:accent-cyan-300">
+            </div>
+        </div>
+    </div>
+
     <!-- Fondos Animados -->
     <div class="background-orb orb-primary"></div>
     <div class="background-orb orb-secondary"></div>
@@ -545,7 +576,7 @@
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-fuchsia-300 transition-colors">Invitaciones Digitales</h3>
                     <p class="text-gray-400 mb-6">Diseños únicos para tus eventos. Desde imágenes sencillas hasta experiencias web interactivas.</p>
-                    <button onclick="toggleAccordion('content-invit', 'chevron-invit')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/10 hover:bg-white/5 transition-colors border border-white/5 group-hover:border-fuchsia-500/30">
+                    <button onclick="toggleAccordion('content-invit', 'chevron-invit')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/10 hover:bg-white/10 transition-colors border border-white/5 group-hover:border-fuchsia-500/30">
                         <span class="text-sm font-semibold text-fuchsia-200">Ver Precios y Detalles</span>
                         <i id="chevron-invit" data-lucide="chevron-down" class="w-4 h-4 text-fuchsia-200 chevron"></i>
                     </button>
@@ -1497,6 +1528,7 @@
         // --- Lógica Scroll para Barra Flotante ---
         let lastScrollTop = 0;
         const floatingContact = document.getElementById('floating-contact');
+        const musicControl = document.getElementById('music-control');
 
         window.addEventListener("scroll", function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -1504,15 +1536,18 @@
             // Si estamos muy arriba (inicio), mostrar siempre
             if (scrollTop < 100) {
                 floatingContact.classList.remove('translate-y-[200%]');
+                musicControl.style.transform = 'translate(-50%, 0)';
                 return;
             }
 
             if (scrollTop > lastScrollTop) {
                 // Scroll hacia abajo -> Ocultar
                 floatingContact.classList.add('translate-y-[200%]');
+                musicControl.style.transform = 'translate(-50%, -300%)'; 
             } else {
                 // Scroll hacia arriba -> Mostrar
                 floatingContact.classList.remove('translate-y-[200%]');
+                musicControl.style.transform = 'translate(-50%, 0)';
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile
         }, false);
@@ -1575,6 +1610,135 @@
                 iframe.src = ''; // Limpiar src
             }, 300);
         }
+
+        // --- Lógica de Música de Fondo y Controles ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bg-music');
+            const musicToggleBtn = document.getElementById('music-toggle');
+            const muteToggleBtn = document.getElementById('mute-toggle');
+            
+            // Nuevas Referencias
+            const volumeExpandBtn = document.getElementById('volume-expand');
+            const volumeWrapper = document.getElementById('volume-wrapper');
+            const volumeSlider = document.getElementById('volume-slider');
+            const expandIcon = volumeExpandBtn.querySelector('i');
+
+            const playIcon = musicToggleBtn.querySelector('i');
+            const muteIcon = muteToggleBtn.querySelector('i');
+
+            if (audio) {
+                audio.volume = 0.4; // Volumen inicial
+                volumeSlider.value = 0.4; // Sincronizar slider
+
+                // Función para actualizar icono de Play/Pause
+                function updatePlayIcon() {
+                    if (audio.paused) {
+                        playIcon.classList.remove('fa-pause');
+                        playIcon.classList.add('fa-play');
+                        playIcon.parentElement.classList.add('text-cyan-400');
+                        playIcon.parentElement.classList.remove('text-green-400');
+                    } else {
+                        playIcon.classList.remove('fa-play');
+                        playIcon.classList.add('fa-pause');
+                        playIcon.parentElement.classList.remove('text-cyan-400');
+                        playIcon.parentElement.classList.add('text-green-400');
+                    }
+                }
+
+                // Función para actualizar icono de Mute
+                function updateMuteIcon() {
+                    if (audio.muted || audio.volume === 0) {
+                        muteIcon.classList.remove('fa-volume-high');
+                        muteIcon.classList.add('fa-volume-xmark');
+                        muteIcon.parentElement.classList.add('text-red-400');
+                    } else {
+                        muteIcon.classList.remove('fa-volume-xmark');
+                        muteIcon.classList.add('fa-volume-high');
+                        muteIcon.parentElement.classList.remove('text-red-400');
+                    }
+                }
+
+                // Toggle Play/Pause
+                musicToggleBtn.addEventListener('click', () => {
+                    if (audio.paused) {
+                        const promise = audio.play();
+                        if (promise !== undefined) {
+                            promise.catch(error => {
+                                console.log("Reproducción fallida o interrumpida", error);
+                            });
+                        }
+                    } else {
+                        audio.pause();
+                    }
+                });
+
+                // Toggle Mute
+                muteToggleBtn.addEventListener('click', () => {
+                    audio.muted = !audio.muted;
+                    updateMuteIcon();
+                    // Si desmuta y el volumen estaba en 0, ponerlo bajito visualmente
+                    if (!audio.muted && audio.volume === 0) {
+                        audio.volume = 0.1;
+                        volumeSlider.value = 0.1;
+                    }
+                });
+
+                // Nueva Lógica: Expandir/Contraer Barra de Volumen
+                volumeExpandBtn.addEventListener('click', () => {
+                    if (volumeWrapper.classList.contains('w-0')) {
+                        // Expandir
+                        volumeWrapper.classList.remove('w-0');
+                        volumeWrapper.classList.add('w-24'); // Ancho fijo cuando se abre
+                        expandIcon.classList.remove('fa-chevron-right');
+                        expandIcon.classList.add('fa-chevron-left');
+                    } else {
+                        // Contraer
+                        volumeWrapper.classList.remove('w-24');
+                        volumeWrapper.classList.add('w-0');
+                        expandIcon.classList.remove('fa-chevron-left');
+                        expandIcon.classList.add('fa-chevron-right');
+                    }
+                });
+
+                // Nueva Lógica: Control del Slider
+                volumeSlider.addEventListener('input', (e) => {
+                    const value = parseFloat(e.target.value);
+                    audio.volume = value;
+                    
+                    // Si el usuario mueve el slider, quitamos el mute si estaba activo
+                    if (value > 0 && audio.muted) {
+                        audio.muted = false;
+                    }
+                    updateMuteIcon();
+                });
+
+                // Listeners de eventos del audio (para sincronizar si el navegador lo pausa/reproduce solo)
+                audio.addEventListener('play', updatePlayIcon);
+                audio.addEventListener('pause', updatePlayIcon);
+
+                // Intentar reproducir automáticamente
+                const playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        updatePlayIcon();
+                    }).catch(error => {
+                        console.log("Autoplay bloqueado. Esperando interacción.");
+                        updatePlayIcon();
+                        
+                        // Fallback: Activar audio en la primera interacción
+                        const enableAudio = () => {
+                            if (audio.paused) {
+                                const p = audio.play();
+                                if(p) p.catch(e => console.log("Error de reproducción por interacción", e));
+                            }
+                            document.removeEventListener('click', enableAudio);
+                        };
+                        document.addEventListener('click', enableAudio);
+                    });
+                }
+            }
+        });
 
     </script>
 </body>
