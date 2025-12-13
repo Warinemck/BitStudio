@@ -185,11 +185,26 @@
             pointer-events: auto;
         }
 
-        /* --- Animación Carrusel Vinilos (NUEVO HORIZONTAL) --- */
+        /* --- Estilo para el Overlay de DEMO (NUEVO) --- */
+        #demo-overlay {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #demo-overlay.hidden-demo {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #demo-overlay.visible-demo {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* --- Animación Carrusel Vinilos (HORIZONTAL) --- */
         .vinyl-track-h {
             animation: scrollLeft 20s linear infinite;
             display: flex;
-            width: max-content; /* Asegura que quepan todos */
+            width: max-content; 
         }
 
         @keyframes scrollLeft {
@@ -197,15 +212,13 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* Máscara de desvanecimiento horizontal */
         .fade-mask-h {
             mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
-        /* Estilos Vinilo CSS */
         .vinyl-record {
-            width: 120px; /* Tamaño fijo para horizontal */
+            width: 120px;
             height: 120px;
             border-radius: 4px;
             background: #1e1e1e;
@@ -215,7 +228,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            flex-shrink: 0; /* Evitar que se aplasten */
+            flex-shrink: 0; 
         }
         .vinyl-disc {
             width: 90%;
@@ -227,7 +240,6 @@
             justify-content: center;
             position: relative;
         }
-        /* Brillo del vinilo */
         .vinyl-disc::after {
             content: '';
             position: absolute;
@@ -251,12 +263,10 @@
     <div class="background-orb orb-secondary"></div>
     <div class="background-orb orb-accent"></div>
 
-    <!-- Navegación -->
+    <!-- Navegación (Igual que antes) -->
     <nav class="fixed w-full z-50 glass-panel border-t-0 border-x-0 top-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                
-                <!-- Logo BitStudio -->
                 <div class="flex items-center gap-3 logo-container group cursor-pointer" onclick="window.location.href='#inicio'">
                     <div class="relative p-2.5 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 group-hover:border-cyan-400/50 transition-colors">
                         <i data-lucide="cpu" class="text-cyan-400 w-6 h-6 logo-icon transition-all duration-300"></i>
@@ -268,25 +278,20 @@
                     </div>
                 </div>
                 
-                <!-- Links Desktop -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-center space-x-8">
                         <a href="#inicio" class="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors">Inicio</a>
                         <a href="#servicios" class="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors">Servicios</a>
                         <a href="#portafolio" class="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors">Portafolio</a>
-                        
-                        <!-- Botón Pagos Desktop -->
                         <button onclick="togglePagos()" class="text-sm font-medium text-blue-300 hover:text-blue-400 transition-colors flex items-center gap-2">
                             <i class="fa-brands fa-paypal"></i> Pagos
                         </button>
-
                         <a href="#contacto" class="px-5 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.15)] transition-all text-sm font-bold">
                             Contáctame
                         </a>
                     </div>
                 </div>
 
-                <!-- Menu Movil Boton -->
                 <div class="md:hidden">
                     <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-300 hover:text-white p-2">
                         <i data-lucide="menu" class="w-7 h-7"></i>
@@ -294,13 +299,11 @@
                 </div>
             </div>
         </div>
-        <!-- Menu Movil Panel -->
         <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10">
             <div class="px-4 py-4 space-y-2">
                 <a href="#inicio" class="block px-3 py-2 rounded-md hover:bg-white/5 text-gray-200">Inicio</a>
                 <a href="#servicios" class="block px-3 py-2 rounded-md hover:bg-white/5 text-gray-200">Servicios</a>
                 <a href="#portafolio" class="block px-3 py-2 rounded-md hover:bg-white/5 text-gray-200">Portafolio</a>
-                <!-- Botón Pagos Movil -->
                 <button onclick="togglePagos(); document.getElementById('mobile-menu').classList.add('hidden')" class="w-full text-left block px-3 py-2 rounded-md hover:bg-white/5 text-blue-300">
                     <i class="fa-brands fa-paypal mr-2"></i> Pagos
                 </button>
@@ -309,23 +312,19 @@
         </div>
     </nav>
 
-    <!-- Overlay de Pagos (Sección Oculta) -->
+    <!-- Overlay de Pagos -->
     <div id="pagos-overlay" class="hidden-overlay fixed inset-0 z-[60] bg-[#0f172a]/95 backdrop-blur-xl flex items-center justify-center p-4">
         <div class="glass-panel p-6 md:p-8 rounded-3xl max-w-md w-full relative border border-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.15)] max-h-[85vh] overflow-y-auto">
             <button onclick="togglePagos()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-
             <div class="text-center">
                 <div class="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-400 border border-blue-500/30 shrink-0">
                     <i class="fa-brands fa-paypal text-4xl"></i>
                 </div>
-                
                 <h2 class="text-3xl font-bold text-white mb-2">Métodos de Pago</h2>
                 <p class="text-gray-400 mb-6 text-sm">Realiza tu pago de forma segura a través de PayPal.</p>
-
                 <div class="space-y-4">
-                    <!-- Opción 1: PayPal.Me Link -->
                     <div class="bg-white/5 rounded-xl p-4 border border-white/10">
                         <p class="text-xs text-blue-300 font-bold uppercase mb-2 tracking-wider">Pago Rápido</p>
                         <p class="text-sm text-gray-300 mb-3">Haz clic en el botón para pagar directamente con tu cuenta:</p>
@@ -333,14 +332,11 @@
                             Pagar con PayPal.Me
                         </a>
                     </div> 
-
                     <div class="relative flex py-2 items-center">
                         <div class="flex-grow border-t border-white/10"></div>
                         <span class="flex-shrink-0 mx-4 text-gray-500 text-xs">O USA EL CORREO</span>
                         <div class="flex-grow border-t border-white/10"></div>
                     </div>
-
-                    <!-- Opción 2: Correo -->
                     <div class="bg-blue-600/10 rounded-xl border border-blue-500/30 relative overflow-hidden transition-all duration-300">
                         <button onclick="toggleEmailPagos()" class="w-full p-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
                             <div>
@@ -352,7 +348,6 @@
                             </div>
                             <i id="chevron-email" data-lucide="chevron-down" class="w-5 h-5 text-blue-300 chevron transition-transform duration-300"></i>
                         </button>
-
                         <div id="email-pagos-content" class="accordion-content px-4 pb-4">
                             <div class="pt-2 border-t border-white/10">
                                 <p class="text-xs text-blue-300 font-bold uppercase mb-2 tracking-wider mt-2">Instrucciones:</p>
@@ -372,11 +367,9 @@
                         </div>
                     </div>
                 </div>
-
                 <p class="mt-8 text-xs text-gray-500 italic">
                     * Una vez realizado el pago, por favor envía una captura de pantalla por WhatsApp para confirmar tu pedido.
                 </p>
-
                 <button onclick="togglePagos()" class="mt-6 text-gray-400 hover:text-white text-sm underline underline-offset-4">
                     Volver a la página principal
                 </button>
@@ -384,10 +377,22 @@
         </div>
     </div>
 
+    <!-- NUEVO: Overlay de Demo (Iframe) -->
+    <div id="demo-overlay" class="hidden-demo fixed inset-0 z-[70] bg-black/90 backdrop-blur-lg flex items-center justify-center p-0 md:p-8">
+        <div class="w-full h-full max-w-sm md:max-w-[400px] md:h-[800px] bg-white relative shadow-2xl md:rounded-[3rem] overflow-hidden border-8 border-gray-900">
+            <!-- Notch simulado para desktop -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-gray-900 rounded-b-2xl z-20 hidden md:block"></div>
+            
+            <button onclick="closeDemo()" class="absolute top-4 right-4 md:top-12 md:right-4 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black transition z-30">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <iframe id="demo-frame" class="w-full h-full" frameborder="0"></iframe>
+        </div>
+    </div>
+
     <!-- Sección Hero (Inicio) -->
     <section id="inicio" class="relative pt-40 pb-20 px-4 text-center">
         <div class="max-w-4xl mx-auto space-y-8">
-            
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-cyan-500/30 text-cyan-300 text-sm font-semibold mx-auto backdrop-blur-md">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -395,15 +400,12 @@
                 </span>
                 BitStudio
             </div>
-            
             <h1 class="text-5xl md:text-7xl font-bold leading-tight tracking-tight text-white">
                 Bienvenido a <br> <span class="text-gradient">BitStudio</span>
             </h1>
-            
             <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 Tu centro de soluciones digitales. Desde la recuperación de música en alta calidad hasta soporte técnico especializado con Linux.
             </p>
-
             <div class="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                 <a href="#servicios" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/25 transition-all transform hover:-translate-y-1">
                     Explorar Servicios
@@ -414,19 +416,18 @@
 
     <!-- Sección de Servicios -->
     <section id="servicios" class="py-20 px-4">
+        <!-- ... (Contenido de servicios igual, solo asegúrate de que el contenido de las invitaciones esté actualizado con el precio) ... -->
+        <!-- Resumido para no exceder limites, el bloque de servicios va aquí -->
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Catálogo BitStudio</h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-fuchsia-500 mx-auto rounded-full"></div>
             </div>
-
-            <!-- --- CATEGORÍA: DIGITALES --- -->
             <h3 class="text-2xl font-bold text-white mb-8 mt-12 ml-2 flex items-center gap-3">
                 <i data-lucide="sparkles" class="text-cyan-400 w-6 h-6"></i> Servicios Digitales
             </h3>
-
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Servicio 1: Música -->
+                <!-- Musica -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-cyan-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-cyan-500/10 border border-cyan-500/20 p-3 rounded-xl text-cyan-400 group-hover:bg-cyan-500/20 transition-colors">
@@ -484,17 +485,17 @@
                     </div>
                 </div>
 
-                <!-- Servicio 2: Invitaciones -->
+                <!-- Invitaciones -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-fuchsia-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-fuchsia-500/10 border border-fuchsia-500/20 p-3 rounded-xl text-fuchsia-400 group-hover:bg-fuchsia-500/20 transition-colors">
                             <i data-lucide="mail" class="w-8 h-8"></i>
                         </div>
-                        <span class="text-xs font-mono text-gray-400 border border-white/10 bg-white/5 px-2 py-1 rounded">Estatica / Video</span>
+                        <span class="text-xs font-mono text-gray-400 border border-white/10 bg-white/5 px-2 py-1 rounded">Web / Video / IMG</span>
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-fuchsia-300 transition-colors">Invitaciones Digitales</h3>
-                    <p class="text-gray-400 mb-6">Diseños únicos para tus eventos. Formato imagen o video animado para redes.</p>
-                    <button onclick="toggleAccordion('content-invit', 'chevron-invit')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5 group-hover:border-fuchsia-500/30">
+                    <p class="text-gray-400 mb-6">Diseños únicos para tus eventos. Desde imágenes sencillas hasta experiencias web interactivas.</p>
+                    <button onclick="toggleAccordion('content-invit', 'chevron-invit')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/10 hover:bg-white/5 transition-colors border border-white/5 group-hover:border-fuchsia-500/30">
                         <span class="text-sm font-semibold text-fuchsia-200">Ver Precios y Detalles</span>
                         <i id="chevron-invit" data-lucide="chevron-down" class="w-4 h-4 text-fuchsia-200 chevron"></i>
                     </button>
@@ -510,6 +511,10 @@
                                     <span>Invitación en Video (MP4)</span>
                                     <span class="font-bold text-green-400">$ 150 MXN</span>
                                 </div>
+                                <div class="flex justify-between items-center p-3 rounded-lg bg-black/20 border border-white/5 border-l-2 border-l-fuchsia-500">
+                                    <span>Web Interactiva (PDF+Web)</span>
+                                    <span class="font-bold text-green-400">$ 200 MXN</span>
+                                </div>
                             </div>
                             <div class="mt-4 pt-4 border-t border-white/10">
                                 <button onclick="toggleAccordion('detail-invit', 'chevron-invit-detail')" class="w-full text-left text-xs text-fuchsia-400 hover:text-fuchsia-300 flex items-center gap-2">
@@ -522,14 +527,15 @@
                                         <ul class="details-list">
                                             <li>Datos del evento (Fecha, Hora, Lugar, Ubicación).</li>
                                             <li>Nombre del festejado(a).</li>
-                                            <li>Temática o colores deseados.</li>
+                                            <li>Ubicación exacta (Link de Maps) para la versión Web.</li>
                                             <li>Fotos de buena calidad (opcional).</li>
-                                            <li>Canción de fondo (para video).</li>
+                                            <li>Canción de fondo (para video/web).</li>
                                         </ul>
                                         <h4 class="font-bold text-white mt-3 mb-2">Tiempo de Entrega:</h4>
                                         <ul class="details-list">
                                             <li>2 a 3 días hábiles (Estática).</li>
                                             <li>4 días hábiles (Video).</li>
+                                            <li>3 a 4 días hábiles (Web Interactiva).</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -537,8 +543,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Servicio 3: CURP -->
+                <!-- Otros servicios digitales... -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-green-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-green-500/10 border border-green-500/20 p-3 rounded-xl text-green-400 group-hover:bg-green-500/20 transition-colors">
@@ -591,8 +596,8 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Servicio 4: Acta de Nacimiento -->
+                
+                <!-- Acta Nacimiento -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-rose-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-rose-500/10 border border-rose-500/20 p-3 rounded-xl text-rose-400 group-hover:bg-rose-500/20 transition-colors">
@@ -647,7 +652,7 @@
                     </div>
                 </div>
 
-                <!-- Servicio 5: Páginas Web -->
+                <!-- Web -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-indigo-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-indigo-500/10 border border-indigo-500/20 p-3 rounded-xl text-indigo-400 group-hover:bg-indigo-500/20 transition-colors">
@@ -655,7 +660,7 @@
                         </div>
                         <span class="text-xs font-mono text-gray-400 border border-white/10 bg-white/5 px-2 py-1 rounded">Web Development</span>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-indigo-300 transition-colors">Páginas Web</h3>
+                    <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-indigo-300 transition-colors">Páginas Web Sencillas</h3>
                     <p class="text-gray-400 mb-6">Sitios web modernos tipo Landing Page para promocionar tu negocio o perfil.</p>
                     <button onclick="toggleAccordion('content-web', 'chevron-web')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5 group-hover:border-indigo-500/30">
                         <span class="text-sm font-semibold text-indigo-200">Ver Precios y Detalles</span>
@@ -700,7 +705,7 @@
                     </div>
                 </div>
 
-                <!-- Servicio 6: Logos Minimalistas -->
+                <!-- Logos -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-amber-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-amber-400 group-hover:bg-amber-500/20 transition-colors">
@@ -749,7 +754,7 @@
                     </div>
                 </div>
 
-                <!-- Servicio 7: Diseño de Lonas -->
+                <!-- Lonas -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-teal-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-teal-500/10 border border-teal-500/20 p-3 rounded-xl text-teal-400 group-hover:bg-teal-500/20 transition-colors">
@@ -797,7 +802,7 @@
                     </div>
                 </div>
 
-                <!-- Servicio 8: Investigaciones -->
+                <!-- Investigaciones -->
                 <div class="glass-card p-8 rounded-3xl border-l-4 border-violet-500 group">
                     <div class="flex justify-between items-start mb-6">
                         <div class="bg-violet-500/10 border border-violet-500/20 p-3 rounded-xl text-violet-400 group-hover:bg-violet-500/20 transition-colors">
@@ -866,7 +871,6 @@
                         </div>
                     </div>
                 </div>
-
             </div> <!-- Fin grid digitales -->
 
             <!-- --- CATEGORÍA: FÍSICOS --- -->
@@ -935,6 +939,30 @@
         </div>
     </section>
 
+    <!-- Sección de Contacto (MOVIDA AQUÍ) -->
+    <section id="contacto" class="py-20 px-4">
+        <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-10 text-center border border-white/10 relative overflow-hidden group">
+            <!-- Efecto de brillo interior -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <h2 class="text-3xl font-bold text-white mb-6">¿Listo para mejorar tu vida digital?</h2>
+            <p class="text-gray-300 mb-8">
+                Contáctanos hoy mismo. En <span class="text-cyan-400 font-bold">BitStudio</span> estamos listos para ayudarte.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://wa.me/message/GTDQYEMHLALMH1?src=qr" target="_blank" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-green-600/20 hover:bg-green-600/40 border border-green-500/30 text-green-400 font-bold transition-all group-btn">
+                    <i class="fa-brands fa-whatsapp text-xl group-btn-hover:scale-110 transition-transform"></i>
+                    WhatsApp
+                </a>
+                <a href="mailto:jesusantoniobarretocastillo02@gmail.com" class="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold transition-all group-btn">
+                    <i data-lucide="mail" class="w-5 h-5 group-btn-hover:scale-110 transition-transform"></i>
+                    Correo Electrónico
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- NUEVA SECCIÓN: Portafolio Detallado -->
     <section id="portafolio" class="py-24 px-4 mb-20"> <!-- mb-20 para dar espacio al flotante -->
         <div class="max-w-7xl mx-auto">
@@ -948,45 +976,36 @@
                 
                 <!-- PROYECTO 1: INVITACIÓN (Izquierda Visual, Derecha Texto) -->
                 <div class="grid lg:grid-cols-2 gap-12 items-center group">
-                    <!-- Visual: Teléfono Mockup (Video/Imagen) -->
+                    <!-- Visual: Teléfono Mockup (Web Interactiva) -->
                     <div class="relative flex justify-center order-1">
-                        <!-- Glow effect -->
                         <div class="absolute inset-0 bg-fuchsia-500/20 blur-[100px] rounded-full"></div>
-                        
-                        <!-- Phone Frame -->
                         <div class="relative w-64 h-[500px] bg-gray-900 rounded-[2.5rem] border-4 border-gray-800 shadow-2xl overflow-hidden transform group-hover:-rotate-3 transition-transform duration-700">
-                            <!-- Notch -->
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-xl z-20"></div>
-                            
-                            <!-- Screen Content (WhatsApp Chat Style) -->
-                            <div class="w-full h-full bg-[#0b141a] overflow-hidden relative flex flex-col">
-                                <!-- Chat Header -->
-                                <div class="h-16 bg-[#1f2c34] flex items-center px-4 gap-3 pt-4">
-                                    <div class="w-8 h-8 rounded-full bg-gray-500"></div>
-                                    <div class="w-24 h-2 bg-gray-600 rounded"></div>
+                            <div class="w-full h-full bg-slate-900 overflow-y-auto no-scrollbar relative">
+                                <div class="h-3/5 bg-gradient-to-b from-purple-900 via-fuchsia-900 to-slate-900 flex flex-col items-center justify-center text-center p-4 relative">
+                                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+                                    <span class="text-fuchsia-200 font-serif italic text-lg mb-2">¡Nos casamos!</span>
+                                    <h3 class="text-3xl font-serif font-bold text-white mb-2 drop-shadow-lg">Ana & Carlos</h3>
+                                    <div class="w-full h-px bg-white/30 my-3"></div>
+                                    <div class="flex gap-2 text-white text-[10px] uppercase tracking-widest mt-2">
+                                        <div class="bg-black/30 p-1 rounded">10 Días</div>
+                                        <div class="bg-black/30 p-1 rounded">05 Hrs</div>
+                                    </div>
                                 </div>
-                                
-                                <!-- Message Bubble (Video/Image Preview) -->
-                                <div class="p-4 flex justify-end">
-                                    <div class="bg-[#005c4b] p-1 rounded-lg rounded-tr-none w-48 shadow-md">
-                                        <!-- Media Content -->
-                                        <div class="aspect-[9/16] bg-gradient-to-br from-purple-900 to-fuchsia-900 rounded-lg relative flex items-center justify-center overflow-hidden mb-1">
-                                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
-                                            <div class="text-center p-2">
-                                                <p class="text-fuchsia-200 font-serif italic text-xs">Mis XV Años</p>
-                                                <h3 class="text-xl font-serif font-bold text-white drop-shadow-md">Valentina</h3>
-                                                <p class="text-white text-[10px] mt-2">24 OCT • 5:00 PM</p>
-                                            </div>
-                                            <!-- Play Button Overlay -->
-                                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                                <div class="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
-                                                    <i class="fa-solid fa-play text-white text-sm ml-1"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-end px-1 pb-1">
-                                            <span class="text-[10px] text-white/60">17:42 <i class="fa-solid fa-check-double text-blue-400 ml-1"></i></span>
-                                        </div>
+                                <div class="p-6 space-y-4 -mt-10 relative z-10">
+                                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10 text-center shadow-lg">
+                                        <p class="text-xs text-gray-400 uppercase tracking-wide">Ceremonia</p>
+                                        <p class="text-xl font-bold text-white">24 OCT</p>
+                                        <p class="text-sm text-gray-300">5:00 PM</p>
+                                    </div>
+                                    <button class="w-full py-3 bg-white text-fuchsia-900 font-bold rounded-full shadow-lg text-xs flex items-center justify-center gap-2 transform hover:scale-105 transition-transform">
+                                        <i class="fa-solid fa-location-dot"></i> VER UBICACIÓN GPS
+                                    </button>
+                                    <button class="w-full py-3 bg-fuchsia-600 text-white font-bold rounded-full shadow-lg text-xs flex items-center justify-center gap-2 transform hover:scale-105 transition-transform">
+                                        <i class="fa-brands fa-whatsapp"></i> CONFIRMAR ASISTENCIA
+                                    </button>
+                                    <div class="text-center mt-2">
+                                        <p class="text-[9px] text-gray-500">Código de Vestimenta: Formal</p>
                                     </div>
                                 </div>
                             </div>
@@ -996,26 +1015,30 @@
                     <!-- Texto -->
                     <div class="order-2 text-left">
                         <div class="inline-block p-3 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mb-6">
-                            <i data-lucide="image" class="w-8 h-8"></i>
+                            <i data-lucide="mouse-pointer-click" class="w-8 h-8"></i>
                         </div>
-                        <h3 class="text-3xl font-bold text-white mb-4">Invitaciones (Imagen y Video)</h3>
+                        <h3 class="text-3xl font-bold text-white mb-4">Invitaciones Web Interactivas</h3>
                         <p class="text-gray-300 leading-relaxed mb-6">
-                            Diseños visuales de alto impacto listos para compartir. Olvídate de imprimir, envía tu invitación al instante por WhatsApp.
+                            Lleva tu evento al siguiente nivel. Entregamos un <strong>PDF elegante</strong> que funciona como "llave" de acceso. Al abrirlo y dar clic, tus invitados son transportados a una <strong>Página Web exclusiva</strong>.
                         </p>
                         <ul class="space-y-4 mb-8">
                             <li class="flex items-start gap-3">
                                 <i data-lucide="check-circle" class="text-fuchsia-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Formato Imagen (JPG):</strong> Alta resolución, colores vibrantes y texto legible. Ideal para estados o envío rápido.</span>
+                                <span class="text-gray-400 text-sm"><strong>PDF "Llave":</strong> Un archivo ligero y estético que se envía por WhatsApp. Contiene el botón de acceso.</span>
                             </li>
                             <li class="flex items-start gap-3">
                                 <i data-lucide="check-circle" class="text-fuchsia-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Formato Video (MP4):</strong> Animaciones elegantes, música de fondo y efectos visuales que sorprenden.</span>
+                                <span class="text-gray-400 text-sm"><strong>Experiencia Web:</strong> Cuenta regresiva en tiempo real, galería de fotos, código de vestimenta y música.</span>
                             </li>
                             <li class="flex items-start gap-3">
                                 <i data-lucide="check-circle" class="text-fuchsia-500 mt-1 w-5 h-5"></i>
-                                <span class="text-gray-400 text-sm"><strong>Ligero y Compatible:</strong> Optimizados para que se vean bien en cualquier celular sin consumir muchos datos.</span>
+                                <span class="text-gray-400 text-sm"><strong>Botones Inteligentes:</strong> "Ver Ubicación" abre Google Maps automáticamente y "Confirmar" abre el chat de WhatsApp.</span>
                             </li>
                         </ul>
+                        <!-- AQUI ESTA EL BOTON DE DEMO -->
+                        <button onclick="openDemo('invitacion.html')" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold transition-all shadow-lg hover:shadow-fuchsia-500/50">
+                            <i class="fa-solid fa-eye"></i> Ver Demo en Vivo
+                        </button>
                     </div>
                 </div>
 
@@ -1443,7 +1466,7 @@
             }
         }
 
-        function copiarCorreo() {
+        function copyingCorreo() {
             const correo = document.getElementById('paypal-email').innerText;
             navigator.clipboard.writeText(correo).then(() => {
                 alert('Correo copiado al portapapeles');
@@ -1472,6 +1495,29 @@
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile
         }, false);
+
+        // --- Lógica para el Modal de Demo (NUEVO) ---
+        function openDemo(url) {
+            const iframe = document.getElementById('demo-frame');
+            const overlay = document.getElementById('demo-overlay');
+            
+            iframe.src = url;
+            overlay.classList.remove('hidden-demo');
+            overlay.classList.add('visible-demo');
+        }
+
+        function closeDemo() {
+            const iframe = document.getElementById('demo-frame');
+            const overlay = document.getElementById('demo-overlay');
+            
+            overlay.classList.remove('visible-demo');
+            overlay.classList.add('hidden-demo');
+            
+            // Limpiar src después de la animación para detener audio/video
+            setTimeout(() => {
+                iframe.src = '';
+            }, 300);
+        }
 
     </script>
 </body>
