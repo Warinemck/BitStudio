@@ -266,7 +266,8 @@
     </audio>
 
     <!-- AGREGADO: Contenedor Principal de Música (Toggle + Menú) -->
-    <div id="music-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2">
+    <!-- MODIFICADO: transition-all para animar top, y duration-500 para suavidad -->
+    <div id="music-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2 transition-all duration-500">
         
         <!-- Botón Disparador ("Bolita") -->
         <button id="music-trigger" class="glass-panel px-4 py-1.5 rounded-full flex items-center gap-2 border border-white/10 shadow-lg backdrop-blur-xl bg-[#0f172a]/60 text-xs font-bold text-gray-300 hover:text-white transition-all hover:scale-105 z-50 group">
@@ -299,13 +300,21 @@
         </div>
     </div>
 
+    <!-- NUEVO: Mini Header / Logo Flotante (Se muestra al bajar el scroll) -->
+    <div id="mini-header" class="fixed top-4 left-4 z-50 transition-all duration-500 -translate-y-32 opacity-0">
+        <div class="glass-panel p-2.5 rounded-xl border border-cyan-500/20 bg-[#0f172a]/90 shadow-lg cursor-pointer flex items-center gap-2 hover:border-cyan-400/50 transition-colors" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <i data-lucide="cpu" class="text-cyan-400 w-6 h-6"></i>
+            <span class="font-bold text-white text-sm hidden sm:block">BitStudio</span>
+        </div>
+    </div>
+
     <!-- Fondos Animados -->
     <div class="background-orb orb-primary"></div>
     <div class="background-orb orb-secondary"></div>
     <div class="background-orb orb-accent"></div>
 
-    <!-- Navegación -->
-    <nav class="fixed w-full z-50 glass-panel border-t-0 border-x-0 top-0">
+    <!-- Navegación (ID Agregado: main-nav) -->
+    <nav id="main-nav" class="fixed w-full z-50 glass-panel border-t-0 border-x-0 top-0 transition-transform duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex items-center gap-3 logo-container group cursor-pointer" onclick="window.location.href='#inicio'">
@@ -1537,28 +1546,73 @@
 
         // --- Lógica Scroll para Barra Flotante ---
         let lastScrollTop = 0;
+        let upScrollDistance = 0; // Para medir cuánto ha subido
         const floatingContact = document.getElementById('floating-contact');
+        const mainNav = document.getElementById('main-nav');
+        const miniHeader = document.getElementById('mini-header');
+        const musicContainer = document.getElementById('music-container');
         
-        // ELIMINADO: const musicControl = document.getElementById('music-control'); 
-        // Ya no necesitamos lógica de scroll para la música
+        // Configuración de umbral para reaparecer el header
+        const UP_SCROLL_THRESHOLD = 150; 
 
         window.addEventListener("scroll", function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
-            // Si estamos muy arriba (inicio), mostrar siempre
-            if (scrollTop < 100) {
+            // Si estamos muy arriba (inicio), mostrar siempre el nav y ocultar el mini header
+            if (scrollTop < 50) {
                 floatingContact.classList.remove('translate-y-[200%]');
+                mainNav.classList.remove('-translate-y-full');
+                miniHeader.classList.add('-translate-y-32', 'opacity-0');
+                musicContainer.classList.replace('top-4', 'top-24'); // Restaurar música
+                upScrollDistance = 0; // Resetear contador al llegar arriba
                 return;
             }
 
             if (scrollTop > lastScrollTop) {
-                // Scroll hacia abajo -> Ocultar Contacto
+                // Scroll hacia ABAJO
+                // 1. Ocultar Contacto
                 floatingContact.classList.add('translate-y-[200%]');
+                
+                // 2. Ocultar Nav Principal
+                mainNav.classList.add('-translate-y-full');
+                
+                // 3. Mostrar Mini Header (Logo Flotante)
+                miniHeader.classList.remove('-translate-y-32', 'opacity-0');
+
+                // 4. Mover botón de música hacia arriba (ocupar lugar del header)
+                musicContainer.classList.replace('top-24', 'top-4');
+                
+                // Resetear contador de subida porque estamos bajando
+                upScrollDistance = 0;
+
+                // Cerrar menú móvil si está abierto al bajar
+                document.getElementById('mobile-menu').classList.add('hidden');
+
             } else {
-                // Scroll hacia arriba -> Mostrar Contacto
+                // Scroll hacia ARRIBA
+                
+                // 1. Mostrar Contacto
                 floatingContact.classList.remove('translate-y-[200%]');
+                
+                // 2. Lógica para el Header Principal ("Considerable cantidad")
+                // Calculamos cuánto hemos subido desde que empezamos a subir
+                let delta = lastScrollTop - scrollTop;
+                upScrollDistance += delta;
+
+                if (upScrollDistance > UP_SCROLL_THRESHOLD) {
+                    // Si hemos subido más del umbral, mostrar Nav y ocultar Mini
+                    mainNav.classList.remove('-translate-y-full');
+                    miniHeader.classList.add('-translate-y-32', 'opacity-0');
+                    
+                    // Restaurar botón de música a su posición original
+                    musicContainer.classList.replace('top-4', 'top-24');
+                }
+                // Si no supera el umbral, seguimos mostrando el Mini Header y ocultando el Nav
+                // y el botón de música se queda arriba (top-4)
             }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile
+            
+            // Actualizar posición previa, evitando valores negativos (rebote en iOS)
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
         }, false);
 
         // --- Lógica para el Modal de Demo (ACTUALIZADA CON MENÚ) ---
