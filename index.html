@@ -265,26 +265,36 @@
         Tu navegador no soporta el elemento de audio.
     </audio>
 
-    <!-- AGREGADO: Control de Música Flotante (Actualizado con Volumen) -->
-    <div id="music-control" class="fixed top-24 left-1/2 -translate-x-1/2 z-40 transition-transform duration-500 glass-panel px-4 py-2 rounded-full flex items-center gap-3 border border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-xl bg-[#0f172a]/60">
-        <button id="music-toggle" class="text-cyan-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
-            <i class="fa-solid fa-play text-lg"></i>
-        </button>
-        <div class="w-px h-4 bg-white/20 shrink-0"></div>
-        <button id="mute-toggle" class="text-gray-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
-            <i class="fa-solid fa-volume-high text-lg"></i>
-        </button>
+    <!-- AGREGADO: Contenedor Principal de Música (Toggle + Menú) -->
+    <div id="music-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2">
         
-        <!-- Nuevo: Separador y Botón Expansor -->
-        <div class="w-px h-4 bg-white/20 shrink-0"></div>
-        <button id="volume-expand" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 w-4 flex justify-center shrink-0">
-            <i class="fa-solid fa-chevron-right text-xs"></i>
+        <!-- Botón Disparador ("Bolita") -->
+        <button id="music-trigger" class="glass-panel px-4 py-1.5 rounded-full flex items-center gap-2 border border-white/10 shadow-lg backdrop-blur-xl bg-[#0f172a]/60 text-xs font-bold text-gray-300 hover:text-white transition-all hover:scale-105 group">
+            <span>Música</span>
+            <i class="fa-solid fa-chevron-down transition-transform duration-300 group-hover:text-cyan-400 text-[10px]"></i>
         </button>
 
-        <!-- Nuevo: Barra de Volumen Desplegable -->
-        <div id="volume-wrapper" class="w-0 overflow-hidden transition-all duration-300 ease-out flex items-center">
-            <div class="w-24 pl-2 flex items-center">
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:accent-cyan-300">
+        <!-- Panel de Control (Oculto por defecto) -->
+        <div id="music-panel" class="hidden glass-panel px-4 py-2 rounded-full flex items-center gap-3 border border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-xl bg-[#0f172a]/80 transition-all duration-300 origin-top animate-fade-in-down">
+            <button id="music-toggle" class="text-cyan-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
+                <i class="fa-solid fa-play text-lg"></i>
+            </button>
+            <div class="w-px h-4 bg-white/20 shrink-0"></div>
+            <button id="mute-toggle" class="text-gray-400 hover:text-white transition-transform hover:scale-110 w-6 flex justify-center shrink-0">
+                <i class="fa-solid fa-volume-high text-lg"></i>
+            </button>
+            
+            <!-- Separador y Botón Expansor -->
+            <div class="w-px h-4 bg-white/20 shrink-0"></div>
+            <button id="volume-expand" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 w-4 flex justify-center shrink-0">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+
+            <!-- Barra de Volumen Desplegable -->
+            <div id="volume-wrapper" class="w-0 overflow-hidden transition-all duration-300 ease-out flex items-center">
+                <div class="w-24 pl-2 flex items-center">
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:accent-cyan-300">
+                </div>
             </div>
         </div>
     </div>
@@ -373,7 +383,7 @@
                         <button onclick="toggleEmailPagos()" class="w-full p-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs text-blue-300 font-bold uppercase tracking-wider">Opción Alternativa</span>
+                                    <span class="text-xs text-blue-300 font-bold uppercase tracking-wider">Opción Recomendada</span>
                                     <span class="bg-blue-600 text-white text-[9px] px-1.5 py-0.5 font-bold rounded">INFO</span>
                                 </div>
                                 <p class="text-sm font-bold text-white mt-1">Ver datos para Transferencia/Correo</p>
@@ -743,7 +753,7 @@
                         </div>
                         <span class="text-xs font-mono text-gray-400 border border-white/10 bg-white/5 px-2 py-1 rounded">Web Development</span>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-indigo-300 transition-colors">Páginas Web</h3>
+                    <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-indigo-300 transition-colors">Páginas Web Sencillas</h3>
                     <p class="text-gray-400 mb-6">Sitios web modernos tipo Landing Page para promocionar tu negocio o perfil.</p>
                     <button onclick="toggleAccordion('content-web', 'chevron-web')" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/10 hover:bg-white/10 transition-colors border border-white/5 group-hover:border-indigo-500/30">
                         <span class="text-sm font-semibold text-indigo-200">Ver Precios y Detalles</span>
@@ -1528,7 +1538,9 @@
         // --- Lógica Scroll para Barra Flotante ---
         let lastScrollTop = 0;
         const floatingContact = document.getElementById('floating-contact');
-        const musicControl = document.getElementById('music-control');
+        
+        // ELIMINADO: const musicControl = document.getElementById('music-control'); 
+        // Ya no necesitamos lógica de scroll para la música
 
         window.addEventListener("scroll", function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -1536,18 +1548,15 @@
             // Si estamos muy arriba (inicio), mostrar siempre
             if (scrollTop < 100) {
                 floatingContact.classList.remove('translate-y-[200%]');
-                musicControl.style.transform = 'translate(-50%, 0)';
                 return;
             }
 
             if (scrollTop > lastScrollTop) {
-                // Scroll hacia abajo -> Ocultar
+                // Scroll hacia abajo -> Ocultar Contacto
                 floatingContact.classList.add('translate-y-[200%]');
-                musicControl.style.transform = 'translate(-50%, -300%)'; 
             } else {
-                // Scroll hacia arriba -> Mostrar
+                // Scroll hacia arriba -> Mostrar Contacto
                 floatingContact.classList.remove('translate-y-[200%]');
-                musicControl.style.transform = 'translate(-50%, 0)';
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para Mobile
         }, false);
@@ -1614,10 +1623,39 @@
         // --- Lógica de Música de Fondo y Controles ---
         document.addEventListener('DOMContentLoaded', function() {
             const audio = document.getElementById('bg-music');
+            
+            // --- NUEVAS REFERENCIAS PARA EL MENÚ DESPLEGABLE ---
+            const musicTrigger = document.getElementById('music-trigger');
+            const musicPanel = document.getElementById('music-panel');
+            const triggerIcon = musicTrigger.querySelector('i');
+
+            // Toggle para mostrar/ocultar el panel de música
+            musicTrigger.addEventListener('click', () => {
+                if (musicPanel.classList.contains('hidden')) {
+                    // Mostrar
+                    musicPanel.classList.remove('hidden');
+                    musicPanel.classList.add('flex'); // Usar flex para mantener layout
+                    // Animación simple con timeout para permitir transición CSS si se desea más complejo, 
+                    // pero aquí usamos clases de utilidad directa
+                    setTimeout(() => {
+                        musicPanel.classList.remove('scale-y-0', 'opacity-0');
+                    }, 10); 
+                    triggerIcon.classList.add('rotate-180');
+                } else {
+                    // Ocultar
+                    musicPanel.classList.add('scale-y-0', 'opacity-0');
+                    triggerIcon.classList.remove('rotate-180');
+                    setTimeout(() => {
+                        musicPanel.classList.add('hidden');
+                        musicPanel.classList.remove('flex');
+                    }, 300); // Esperar transición
+                }
+            });
+
+
             const musicToggleBtn = document.getElementById('music-toggle');
             const muteToggleBtn = document.getElementById('mute-toggle');
             
-            // Nuevas Referencias
             const volumeExpandBtn = document.getElementById('volume-expand');
             const volumeWrapper = document.getElementById('volume-wrapper');
             const volumeSlider = document.getElementById('volume-slider');
