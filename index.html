@@ -1727,15 +1727,34 @@
                     triggerIcon.classList.add('rotate-180');
                 } else {
                     // OCULTAR:
-                    // 1. Aplicar estado de salida (subir y desvanecer)
-                    musicPanel.classList.add('-translate-y-8', 'opacity-0');
-                    triggerIcon.classList.remove('rotate-180');
                     
-                    // 2. Esperar a que termine la animación (500ms) para ocultar del DOM
-                    setTimeout(() => {
-                        musicPanel.classList.add('hidden');
-                        musicPanel.classList.remove('flex');
-                    }, 500); 
+                    // Función auxiliar para cerrar el panel (animación de salida)
+                    const hidePanel = () => {
+                        musicPanel.classList.add('-translate-y-8', 'opacity-0');
+                        triggerIcon.classList.remove('rotate-180');
+                        
+                        setTimeout(() => {
+                            musicPanel.classList.add('hidden');
+                            musicPanel.classList.remove('flex');
+                        }, 500); 
+                    };
+
+                    // Verificar si el volumen está expandido
+                    if (volumeWrapper.classList.contains('w-48')) {
+                        // 1. Cerrar volumen primero
+                        volumeWrapper.classList.remove('w-48');
+                        volumeWrapper.classList.add('w-0');
+                        expandIcon.classList.remove('fa-chevron-left');
+                        expandIcon.classList.add('fa-chevron-right');
+
+                        // 2. Esperar a que termine la transición del volumen (300ms) y luego ocultar el panel
+                        setTimeout(() => {
+                            hidePanel();
+                        }, 300);
+                    } else {
+                        // Si el volumen ya está cerrado, ocultar panel directamente
+                        hidePanel();
+                    }
                 }
             });
 
