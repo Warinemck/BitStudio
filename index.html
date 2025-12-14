@@ -315,10 +315,14 @@
                 <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
 
-            <!-- Barra de Volumen Desplegable -->
+            <!-- Barra de Volumen Desplegable (MODIFICADO) -->
             <div id="volume-wrapper" class="w-0 overflow-hidden transition-all duration-300 ease-out flex items-center">
-                <div class="w-24 pl-2 flex items-center">
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:accent-cyan-300">
+                <!-- MODIFICADO: w-24 a w-48 para más espacio y gap-2 -->
+                <div class="w-48 pl-3 flex items-center gap-3">
+                    <!-- MODIFICADO: h-1 a h-1.5 para mejor touch -->
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.4" class="w-full h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:accent-cyan-300">
+                    <!-- AGREGADO: Indicador de porcentaje -->
+                    <span id="volume-percentage" class="text-xs font-mono text-cyan-400 font-bold min-w-[2.5rem] text-right">40%</span>
                 </div>
             </div>
         </div>
@@ -1837,27 +1841,32 @@
                     }
                 });
 
-                // Nueva Lógica: Expandir/Contraer Barra de Volumen
+                // Nueva Lógica: Expandir/Contraer Barra de Volumen (ACTUALIZADA para w-48)
                 volumeExpandBtn.addEventListener('click', () => {
                     if (volumeWrapper.classList.contains('w-0')) {
                         // Expandir
                         volumeWrapper.classList.remove('w-0');
-                        volumeWrapper.classList.add('w-24'); // Ancho fijo cuando se abre
+                        volumeWrapper.classList.add('w-48'); // Ancho fijo aumentado
                         expandIcon.classList.remove('fa-chevron-right');
                         expandIcon.classList.add('fa-chevron-left');
                     } else {
                         // Contraer
-                        volumeWrapper.classList.remove('w-24');
+                        volumeWrapper.classList.remove('w-48');
                         volumeWrapper.classList.add('w-0');
                         expandIcon.classList.remove('fa-chevron-left');
                         expandIcon.classList.add('fa-chevron-right');
                     }
                 });
 
-                // Nueva Lógica: Control del Slider
+                // Nueva Lógica: Control del Slider y Porcentaje
+                const volumePercentage = document.getElementById('volume-percentage'); // Referencia al texto
+
                 volumeSlider.addEventListener('input', (e) => {
                     const value = parseFloat(e.target.value);
                     audio.volume = value;
+                    
+                    // Actualizar texto del porcentaje
+                    volumePercentage.innerText = Math.round(value * 100) + '%';
                     
                     // Si el usuario mueve el slider, quitamos el mute si estaba activo
                     if (value > 0 && audio.muted) {
