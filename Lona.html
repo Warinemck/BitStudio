@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lona BitStudio | Diseño Final</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a; /* Slate 900 - Color base del sitio */
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            /* Dimensiones: 1.40 metros ancho x 2.00 metros alto (Escala 1px = 1mm aprox para diseño web) */
+            width: 1400px; 
+            height: 2000px; 
+            overflow: hidden;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* --- Fondos (Orbes idénticos a la web) --- */
+        .background-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        .orb-1 { width: 900px; height: 900px; background: radial-gradient(circle, #4f46e5 0%, transparent 70%); top: -200px; left: -200px; }
+        .orb-2 { width: 800px; height: 800px; background: radial-gradient(circle, #c026d3 0%, transparent 70%); bottom: -100px; right: -200px; }
+        .orb-3 { width: 600px; height: 600px; background: radial-gradient(circle, #06b6d4 0%, transparent 70%); top: 40%; left: 50%; transform: translate(-50%, -50%); opacity: 0.3; }
+
+        /* --- Efecto Cristal (Glassmorphism) --- */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #22d3ee, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Ajustes para impresión/visualización --- */
+        .service-icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 140px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+        }
+        
+        /* Forzar negrita extra en impresión */
+        strong { font-weight: 800; }
+    </style>
+</head>
+<body class="flex flex-col justify-between py-20 px-16">
+
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+    <div class="background-orb orb-3"></div>
+
+    <header class="text-center mb-10">
+        <div class="inline-flex items-center justify-center gap-8 mb-4">
+            <div class="p-6 rounded-3xl bg-cyan-500/10 border border-cyan-500/30">
+                <i data-lucide="cpu" class="w-32 h-32 text-cyan-400"></i>
+            </div>
+            <h1 class="text-[10rem] font-black tracking-tighter leading-none text-white drop-shadow-xl">
+                Bit<span class="text-gradient">Studio</span>
+            </h1>
+        </div>
+        <div class="w-3/4 h-2 bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-cyan-500 mx-auto rounded-full mb-6"></div>
+        <p class="text-5xl text-gray-300 font-bold tracking-[0.3em] uppercase">Soluciones Tecnológicas</p>
+    </header>
+
+    <div class="flex-grow flex flex-col gap-7 w-full px-4">
+        
+        <div class="glass-panel p-8 flex items-center gap-10 border-l-[16px] border-cyan-500 relative overflow-hidden">
+            <div class="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-cyan-500/10 to-transparent"></div>
+            <div class="service-icon-box">
+                <i data-lucide="music" class="w-20 h-20 text-cyan-400"></i>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-6xl font-black text-white mb-2">Música sin internet</h2>
+                <p class="text-3xl text-cyan-100 font-medium">Descarga de canciones con portada original y alta calidad.</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 flex items-center gap-10 border-l-[16px] border-fuchsia-500 relative overflow-hidden">
+            <div class="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-fuchsia-500/10 to-transparent"></div>
+            <div class="service-icon-box">
+                <i data-lucide="mail" class="w-20 h-20 text-fuchsia-400"></i>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-6xl font-black text-white mb-2">Diseño de invitaciones</h2>
+                <p class="text-3xl text-fuchsia-100 font-medium">Imagenes, videos, o paginas interactivas para mandar en redes sociales.</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 flex items-center gap-10 border-l-[16px] border-green-500 relative overflow-hidden">
+            <div class="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-green-500/10 to-transparent"></div>
+            <div class="service-icon-box">
+                <i data-lucide="file-check" class="w-20 h-20 text-green-400"></i>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-6xl font-black text-white mb-2">CURP, Actas e Investigaciones</h2>
+                <p class="text-3xl text-green-100 font-medium">Trámites rápidos, impresiones y tareas escolares.</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 flex items-center gap-10 border-l-[16px] border-orange-500 relative overflow-hidden">
+            <div class="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-orange-500/10 to-transparent"></div>
+            <div class="service-icon-box">
+                <i class="fa-brands fa-linux text-7xl text-orange-400"></i>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-6xl font-black text-white mb-2">Aceleracion de laptops</h2>
+                <p class="text-3xl text-orange-100 font-medium">Instalación de Linux Mint y optimización de equipos lentos.</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-8 flex items-center gap-10 border-l-[16px] border-amber-400 relative overflow-hidden">
+            <div class="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-amber-500/10 to-transparent"></div>
+            <div class="service-icon-box">
+                <i data-lucide="pen-tool" class="w-20 h-20 text-amber-400"></i>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-6xl font-black text-white mb-2">Logos y Publicidad</h2>
+                <p class="text-3xl text-amber-100 font-medium">Creación de logos, lonas y páginas web modernas.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="mt-12 bg-black/40 backdrop-blur-md rounded-[50px] border border-white/20 p-10">
+        <div class="flex justify-between items-center">
+            
+            <div class="flex flex-col items-center gap-4 w-1/4">
+                <p class="text-2xl font-bold text-cyan-400 uppercase tracking-widest mb-1">Consulta la web</p>
+                <div id="qr-web" class="qr-container"></div>
+            </div>
+
+            <div class="flex-1 text-center border-x-2 border-white/10 px-8">
+                <p class="text-3xl text-gray-400 font-bold uppercase mb-2">Contáctanos / WhatsApp</p>
+                <div class="flex justify-center items-center gap-6 my-4">
+                    <i class="fa-brands fa-whatsapp text-green-500 text-8xl"></i>
+                    <p class="text-[4rem] font-black text-white tracking-tighter leading-none">246 123 4567</p>
+                </div>
+                <div class="inline-block px-8 py-2 bg-white/10 rounded-3xl">
+                    <p class="text-2xl text-gray-200 font-semibold"><i class="fa-solid fa-location-dot text-red-500 mr-3"></i>3ra Privada 1603. Col. Benito Juarez, San Luis Apizaquito<br>A un lado de la carpinteria y ebanisteria Barreto</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-4 w-1/4">
+                <p class="text-2xl font-bold text-green-500 uppercase tracking-widest mb-1">Manda Mensaje</p>
+                <div id="qr-wa" class="qr-container"></div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Configuración común para QRs
+        const qrConfig = {
+            width: 180,
+            height: 180,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        };
+
+        // 1. QR a la Página Web (Usando tu link real del contexto)
+        new QRCode(document.getElementById("qr-web"), {
+            ...qrConfig,
+            text: "https://warinemck.github.io/BitStudio-BarretoCastillo/"
+        });
+
+        // 2. QR directo a WhatsApp
+        // IMPORTANTE: Asegúrate de que el número sea el correcto antes de imprimir
+        new QRCode(document.getElementById("qr-wa"), {
+            ...qrConfig,
+            text: "https://wa.me/522411760596?text=Hola%20BitStudio,%20vi%20su%20lona%20y%20me%20interesa%20un%20servicio."
+        });
+    </script>
+</body>
+</html>
